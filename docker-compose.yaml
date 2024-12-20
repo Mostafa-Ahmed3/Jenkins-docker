@@ -1,0 +1,21 @@
+services:
+  jenkins-agent:
+    image: jenkins/inbound-agent
+    container_name: jenkins-agent
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /home/dust/jenkins/:/home/jenkins/agent
+      - /usr/bin/docker:/usr/bin/docker
+    environment:
+      - JENKINS_URL=http://192.168.138.128:8080/
+      - JENKINS_SECRET=f31122e83ab1196d7bfc5626bf65b25162ad024ce851086bfc46cedee6485443
+      - JENKINS_AGENT_NAME=agent
+      - JENKINS_AGENT_WORKDIR=/home/jenkins/agent
+    command: "/usr/local/bin/jenkins-agent"
+    networks:
+      - jenkins
+    
+networks:
+  jenkins:
+    driver: bridge
